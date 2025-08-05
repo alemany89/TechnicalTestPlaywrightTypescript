@@ -37,5 +37,19 @@ test.describe("Login Feature", () => {
       expect(await loginPage.isLoaded()).toBeTruthy();
     });
   });
-  
+
+  test("Unsuccessful login with empty username", async ({ loginPage }) => {
+    await test.step("When I login with empty credentials", async () => {
+      await loginPage.login("", "aaa");
+    });
+
+    await test.step("Then I should see an error message refering to the username", async () => {
+      const expectedErrorMessage = "Epic sadface: Username is required";
+      expect(await loginPage.getErrorMessage()).toContain(expectedErrorMessage);
+    });
+
+    await test.step("And I should still be on the login page", async () => {
+      expect(await loginPage.isLoaded()).toBeTruthy();
+    });
+  });
 });
