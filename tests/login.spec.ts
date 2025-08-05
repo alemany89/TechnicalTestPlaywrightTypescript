@@ -52,4 +52,22 @@ test.describe("Login Feature", () => {
       expect(await loginPage.isLoaded()).toBeTruthy();
     });
   });
+
+  test("Unsuccsessful login when using a locked user", async ({
+    loginPage,
+  }) => {
+    await test.step("When I login with a locked user", async () => {
+      await loginPage.login("locked_out_user", "secret_sauce");
+    });
+
+    await test.step("Then I should see an error message", async () => {
+      const expectedErrorMessage =
+        "Epic sadface: Sorry, this user has been locked out.";
+      expect(await loginPage.getErrorMessage()).toContain(expectedErrorMessage);
+    });
+
+    await test.step("And I should still be on the login page", async () => {
+      expect(await loginPage.isLoaded()).toBeTruthy();
+    });
+  });
 });

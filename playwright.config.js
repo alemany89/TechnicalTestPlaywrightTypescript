@@ -1,7 +1,7 @@
 export default {
   testDir: "./tests",
   use: {
-    headless: false,
+    headless: true,
     browserName: "chromium",
     viewport: { width: 1280, height: 720 },
     screenshot: "only-on-failure",
