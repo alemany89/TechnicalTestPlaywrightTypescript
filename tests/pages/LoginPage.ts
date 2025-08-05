@@ -24,4 +24,14 @@ export class LoginPage extends CommonPage {
     await this.page.goto("https://www.saucedemo.com/");
   }
 
+  async getErrorMessage(): Promise<string> {
+    const errorMessage = this.page.locator("[data-test='error']");
+    return await this.getText(errorMessage);
+  }
+
+    async isLoaded(): Promise<boolean> {
+          const loginButton = this.page.locator('#login-button');
+          return await loginButton.isVisible();
+  }
+
 }

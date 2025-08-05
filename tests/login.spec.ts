@@ -19,4 +19,23 @@ test.describe("Login Feature", () => {
       expect(await productsPage.isLoaded()).toBeTruthy();
     });
   });
+
+  test("Unsuccessful login with invalid username and password", async ({
+    loginPage,
+  }) => {
+    await test.step("When I login with invalid credentials", async () => {
+      await loginPage.login("wrongLuisUser", "wrongPasswordLuis");
+    });
+
+    await test.step("Then I should see an error message", async () => {
+      const expectedErrorMessage =
+        "Epic sadface: Username and password do not match any user in this service";
+      expect(await loginPage.getErrorMessage()).toContain(expectedErrorMessage);
+    });
+
+    await test.step("And I should still be on the login page", async () => {
+      expect(await loginPage.isLoaded()).toBeTruthy();
+    });
+  });
+  
 });

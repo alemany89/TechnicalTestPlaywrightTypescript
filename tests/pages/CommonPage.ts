@@ -1,9 +1,6 @@
-import { Page } from '@playwright/test';
-
+import { Locator, Page } from "@playwright/test";
 
 export class CommonPage {
-
-  
   protected page: Page;
 
   constructor(page: Page) {
@@ -20,9 +17,8 @@ export class CommonPage {
     await this.page.fill(selector, value);
   }
 
-  async getText(selector: string) {
-    await this.page.waitForSelector(selector);
-    return await this.page.textContent(selector);
+  async getText(locator: Locator): Promise<string> {
+    await locator.waitFor();
+    return (await locator.textContent()) || "";
   }
-
 }
