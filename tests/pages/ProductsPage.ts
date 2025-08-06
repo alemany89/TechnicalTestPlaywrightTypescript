@@ -3,6 +3,7 @@ import { CommonPage } from "./CommonPage";
 
 export class ProductsPage extends CommonPage {
 
+
   constructor(page: Page) {
     super(page);
   }
@@ -27,5 +28,33 @@ export class ProductsPage extends CommonPage {
 		const cartIcon = this.page.locator("[data-test='shopping-cart-link']");
 		return cartIcon.click();
 	}
+
+  	sortProductsAlphabetically() {
+		const sortButton = this.page.locator("[data-test='product-sort-container']");
+		return sortButton.selectOption({ label: "Name (A to Z)" });
+	}
+
+  async sortProductsByPriceInDescendingOrder() {
+		const sortButton = this.page.locator("[data-test='product-sort-container']");
+		return sortButton.selectOption({ label: "Price (high to low)" });
+	}
+
+  async sortProductsByPriceInAscendingOrder() {
+		const sortButton = this.page.locator("[data-test='product-sort-container']");
+		return sortButton.selectOption({ label: "Price (low to high)" });
+	}
+
+  async sortProductsReverseAlphabetically() {
+    const sortButton = this.page.locator("[data-test='product-sort-container']");
+    return sortButton.selectOption({ label: "Name (Z to A)" });
+  }
+
+  getProductsNames() {
+		return this.page.locator("[data-test='inventory-item-name']").allTextContents();
+	}
+
+  getProductPrices() {
+    return this.page.locator("[data-test='inventory-item-price']").allTextContents();
+  }
 
 }
