@@ -1,4 +1,4 @@
-import { APIResponse } from '@playwright/test';
+import { APIResponse } from "@playwright/test";
 
 /**
  * Retries an HTTP request function until it returns a 200 OK response or the max retry limit is reached.
@@ -29,7 +29,41 @@ export const pollUntilOk = async (
         `Attempt ${attempt}/${maxRetries}: Received status ${status}. Retrying in ${delayMs}ms...`
       );
     } catch (err) {
-      console.error(`Attempt ${attempt}/${maxRetries} failed with error: ${err}`);
+      console.error(
+        `Attempt ${attempt}/${maxRetries} failed with error: ${err}`
+      );
+    }
+
+    await new Promise((res) => setTimeout(res, delayMs));
+  }
+
+  throw new Error(`Failed after ${maxRetries} retries.`);
+};
+
+export const pollUntilStatus = async (
+  requestFn: () => Promise<APIResponse>,
+  expectedStatus: string,
+  maxRetries: number = 5,
+  delayMs: number = 1000
+): Promise<APIResponse> => {
+  let lastResponse: APIResponse | undefined;
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      lastResponse = await requestFn();
+      const { status } = await lastResponse.json();
+
+      if (status === expectedStatus) {
+        return lastResponse;
+      }
+
+      console.warn(
+        `Attempt ${attempt}/${maxRetries}: Received status ${status}. Expected ${expectedStatus}. Retrying in ${delayMs}ms...`
+      );
+    } catch (err) {
+      console.error(
+        `Attempt ${attempt}/${maxRetries} failed with error: ${err}`
+      );
     }
 
     await new Promise((res) => setTimeout(res, delayMs));

@@ -44,4 +44,26 @@ export class PetService {
 
     return response;
   }
+
+  async updatePet(updatedPet: any) {
+    this.log &&
+      console.log(
+        `➡️ [PUT] ${this.baseURL}/pet\n`,
+        JSON.stringify(updatedPet, null, 2)
+      );
+
+    const response = await this.request.put(`${this.baseURL}/pet`, {
+      data: updatedPet,
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    this.log && console.log(`⬅️ [${response.status()}] PUT /pet`);
+    const responseBody = await response.json();
+    console.log("Response JSON:", JSON.stringify(responseBody, null, 2));
+
+    return response;
+  }
 }
