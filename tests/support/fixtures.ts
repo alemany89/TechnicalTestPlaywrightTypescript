@@ -1,4 +1,4 @@
-import { test as base, expect } from "@playwright/test";
+import { test as testBase, expect } from "@playwright/test";
 import { LoginPage } from "../pages/LoginPage";
 import { ProductsPage } from "../pages/ProductsPage";
 import { YourCartPage } from "../pages/YourCartPage";
@@ -7,6 +7,11 @@ import { CheckoutOverview } from "../pages/CheckoutOverview";
 import { CheckoutComplete } from "../pages/CheckoutComplete";
 import { MenuPage } from "../pages/MenuPage";
 import { AboutPage } from "../pages/AboutPage";
+import { PetService } from "../../src/services/PetService";
+
+type ApiFixtures = {
+  petService: PetService;
+};
 
 type PageFixtures = {
   loginPage: LoginPage;
@@ -19,7 +24,11 @@ type PageFixtures = {
   aboutPage: AboutPage;
 };
 
-export const test = base.extend<PageFixtures>({
+export const test = testBase.extend<PageFixtures & ApiFixtures>({
+petService: async ({ request }, use) => {
+  const service = new PetService(request, true);
+  await use(service);
+},
   loginPage: async ({ page }, use) => {
     const loginPage = new LoginPage(page);
     await use(loginPage);
