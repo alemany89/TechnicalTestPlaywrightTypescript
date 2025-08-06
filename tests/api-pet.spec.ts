@@ -79,4 +79,55 @@ test.describe("Pet API - CRUD tests", () => {
       expect(responseFromGetToJson.status).toBe("sold");
     });
   });
+
+  test("Delete pet by ID", async ({ petService }) => {
+    const pet = new PetBuilder()
+      .withId(Date.now())
+      .withName("LuigisPet")
+      .withStatus("PendingToBeDeleted")
+      .build();
+
+    let petIdFromPost: number;
+
+    await test.step("Create a new pet", async () => {
+      const postResponse = await petService.createPet(pet);
+      expect(postResponse.status()).toBe(200);
+
+      const responseFromPostToJson = await postResponse.json();
+      expect(responseFromPostToJson.name).toBe("LuigisPet");
+      expect(responseFromPostToJson.status).toBe("PendingToBeDeleted");
+
+      petIdFromPost = responseFromPostToJson.id;
+    });
+
+    await test.step("Get pet until pet is available by ID", async () => {
+      const getPetByIdFn = () => petService.getPetById(petIdFromPost);
+      const getResponse = await pollUntilOk(getPetByIdFn);
+      const getResponseFromJson = await getResponse.json();
+
+      expect(getResponseFromJson.name).toBe("LuigisPet");
+      expect(getResponseFromJson.status).toBe("PendingToBeDeleted");
+    });
+
+    await test.step("Delete pet by ID", async () => {
+      const deletePetByIdFn = () => petService.deletePetById(petIdFromPost);
+      const deleteResponse = await pollUntilOk(deletePetByIdFn);
+      const expectedJsonResponse = {
+        code: 200,
+        type: "unknown",
+        message: `${petIdFromPost}`,
+      };
+
+      expect(deleteResponse.status()).toBe(200);
+      const deleteResponseFromJson = await deleteResponse.json();
+      expect(deleteResponseFromJson).toEqual(expectedJsonResponse);
+    });
+
+    await test.step("Check Get pet  is not found after 5 tries", async () => {
+      const getPetByIdFn = () => petService.getPetById(petIdFromPost);
+      await expect(pollUntilOk(getPetByIdFn)).rejects.toThrow(
+        "Failed after 5 retries."
+      );
+    });
+  });
 });

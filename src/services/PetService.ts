@@ -66,4 +66,24 @@ export class PetService {
 
     return response;
   }
+
+  async deletePetById(petIdFromPost: number) {
+    this.log && console.log(`➡️ [DELETE] ${this.baseURL}/pet/${petIdFromPost}`);
+
+    const response = await this.request.delete(
+      `${this.baseURL}/pet/${petIdFromPost}`,
+      {
+        headers: {
+          accept: "application/json",
+          api_key: "special-key",
+        },
+      }
+    );
+    this.log &&
+      console.log(`⬅️ [${response.status()}] DELETE /pet/${petIdFromPost}`);
+    const responseBody = await response.json();
+    console.log("Response JSON:", JSON.stringify(responseBody, null, 2));
+
+    return response;
+  }
 }
