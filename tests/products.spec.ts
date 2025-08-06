@@ -68,4 +68,26 @@ test.describe("Products Feature", () => {
     });
   });
 
+  test("Sorting products by price in ascending order", async ({
+    productsPage,
+  }) => {
+    let expectedPricesAfterSorting: string[];
+
+    await test.step("When I get the current list of products prices before sorting", async () => {
+      await productsPage.sortProductsByPriceInAscendingOrder();
+      const pricesBeforeSorting = await productsPage.getProductPrices();
+      expectedPricesAfterSorting = pricesBeforeSorting
+        .slice()
+        .sort((a, b) => parseFloat(a) - parseFloat(b));
+    });
+
+    await test.step("And I sort the products by price in ascending order", async () => {
+      await productsPage.sortProductsByPriceInAscendingOrder();
+    });
+
+    await test.step("Then the products should be sorted by price in ascending order", async () => {
+      const productsPriceAfterSorting = await productsPage.getProductPrices();
+      expect(productsPriceAfterSorting).toEqual(expectedPricesAfterSorting);
+    });
+  });
 });
