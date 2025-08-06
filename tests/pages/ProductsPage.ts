@@ -12,4 +12,20 @@ export class ProductsPage extends CommonPage {
     return await titleProductsPage.isVisible();
   }
 
+  async waitForProductsToLoad() {
+    await this.page.waitForSelector("[data-test='inventory-list']", { state: "attached" });
+  }
+
+    addProductToCart(productName: string) {
+      const productNameToSelectorFormat = productName.replace(/\s+/g, '-').toLowerCase();
+      const productLocator = this.page.locator(`button[data-test='add-to-cart-${productNameToSelectorFormat}']`);
+
+      return productLocator.click();
+  }
+
+  	clickToCartIcon() {
+		const cartIcon = this.page.locator("[data-test='shopping-cart-link']");
+		return cartIcon.click();
+	}
+
 }

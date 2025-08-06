@@ -7,15 +7,6 @@ export class CommonPage {
     this.page = page;
   }
 
-  async click(selector: string) {
-    await this.page.waitForSelector(selector);
-    await this.page.click(selector);
-  }
-
-  async fill(selector: string, value: string) {
-    await this.page.waitForSelector(selector);
-    await this.page.fill(selector, value);
-  }
 
   async getText(locator: Locator): Promise<string> {
     await locator.waitFor();
