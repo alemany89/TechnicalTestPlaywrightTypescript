@@ -8,7 +8,7 @@ export class ProductsPage extends CommonPage {
     super(page);
   }
 
-  async isLoaded(): Promise<boolean> {
+  async isLoaded()  {
     const titleProductsPage = this.page.locator("[data-test='title']");
     return await titleProductsPage.isVisible();
   }

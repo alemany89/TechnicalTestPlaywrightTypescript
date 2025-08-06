@@ -1,10 +1,12 @@
-import { test as base, expect } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
-import { ProductsPage } from '../pages/ProductsPage';
-import { YourCartPage } from '../pages/YourCartPage';
-import { CheckoutYourInformationPage } from '../pages/CheckoutYourInformationPage';
-import { CheckoutOverview } from '../pages/CheckoutOverview';
-import { CheckoutComplete } from '../pages/CheckoutComplete';
+import { test as base, expect } from "@playwright/test";
+import { LoginPage } from "../pages/LoginPage";
+import { ProductsPage } from "../pages/ProductsPage";
+import { YourCartPage } from "../pages/YourCartPage";
+import { CheckoutYourInformationPage } from "../pages/CheckoutYourInformationPage";
+import { CheckoutOverview } from "../pages/CheckoutOverview";
+import { CheckoutComplete } from "../pages/CheckoutComplete";
+import { MenuPage } from "../pages/MenuPage";
+import { AboutPage } from "../pages/AboutPage";
 
 type PageFixtures = {
   loginPage: LoginPage;
@@ -13,6 +15,8 @@ type PageFixtures = {
   checkoutYourInformationPage: CheckoutYourInformationPage;
   checkoutOverview: CheckoutOverview;
   checkoutComplete: CheckoutComplete;
+  menuPage: MenuPage;
+  aboutPage: AboutPage;
 };
 
 export const test = base.extend<PageFixtures>({
@@ -39,6 +43,14 @@ export const test = base.extend<PageFixtures>({
   checkoutComplete: async ({ page }, use) => {
     const checkoutComplete = new CheckoutComplete(page);
     await use(checkoutComplete);
+  },
+  menuPage: async ({ page }, use) => {
+    const menuPage = new MenuPage(page);
+    await use(menuPage);
+  },
+  aboutPage: async ({ page }, use) => {
+    const aboutPage = new AboutPage(page);
+    await use(aboutPage);
   },
 });
 

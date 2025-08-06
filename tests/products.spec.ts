@@ -90,4 +90,16 @@ test.describe("Products Feature", () => {
       expect(productsPriceAfterSorting).toEqual(expectedPricesAfterSorting);
     });
   });
+
+  test("From product page i can access to about page", async ({ menuPage, aboutPage }) => {
+	await test.step("When I click on the about link", async () => {
+		await menuPage.clickOnMenuButton();
+		await menuPage.clickOnAboutLink();
+	});
+	await test.step("Then I should see the about page", async () => {
+		await aboutPage.waitForAboutPageToLoad();
+		const aboutText = await aboutPage.getAboutText();
+		expect(aboutText).toContain("Build apps users love with AI-driven insights");
+	});
+  });
 });

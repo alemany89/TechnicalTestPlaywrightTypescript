@@ -6,5 +6,5 @@ export default {
     viewport: { width: 1280, height: 720 },
     screenshot: "only-on-failure",
   },
-  reporter: [["html", { open: "always" }]]
+  reporter: [["html", { open: "never" }]]
 };
