@@ -1,4 +1,5 @@
 import { PetBuilder } from "../src/builders/PetBuilder";
+import { Pet } from "../src/models/Pet";
 import { pollUntilOk, pollUntilStatus } from "../src/utils/polling";
 import { expect, test } from "./support/fixtures";
 
@@ -7,7 +8,7 @@ test.describe("Pet API - CRUD tests", () => {
     const pet = new PetBuilder()
       .withId(Date.now())
       .withName("LuigisPet")
-      .withStatus("owned")
+      .withStatus("sold")
       .build();
 
     let petIdFromPost: number;
@@ -18,7 +19,7 @@ test.describe("Pet API - CRUD tests", () => {
 
       const responseFromPostToJson = await postResponse.json();
       expect(responseFromPostToJson.name).toBe("LuigisPet");
-      expect(responseFromPostToJson.status).toBe("owned");
+      expect(responseFromPostToJson.status).toBe("sold");
 
       petIdFromPost = responseFromPostToJson.id;
     });
@@ -29,7 +30,7 @@ test.describe("Pet API - CRUD tests", () => {
       const petData = await getResponse.json();
 
       expect(petData.name).toBe("LuigisPet");
-      expect(petData.status).toBe("owned");
+      expect(petData.status).toBe("sold");
     });
   });
 
@@ -37,7 +38,7 @@ test.describe("Pet API - CRUD tests", () => {
     const pet = new PetBuilder()
       .withId(Date.now())
       .withName("LuigisPet")
-      .withStatus("owned")
+      .withStatus("available")
       .build();
 
     let petIdFromPost: number;
@@ -48,7 +49,7 @@ test.describe("Pet API - CRUD tests", () => {
 
       const responseFromPostToJson = await postResponse.json();
       expect(responseFromPostToJson.name).toBe("LuigisPet");
-      expect(responseFromPostToJson.status).toBe("owned");
+      expect(responseFromPostToJson.status).toBe("available");
 
       petIdFromPost = responseFromPostToJson.id;
     });
@@ -59,11 +60,11 @@ test.describe("Pet API - CRUD tests", () => {
       const responseFromGetToJson = await getResponse.json();
 
       expect(responseFromGetToJson.name).toBe("LuigisPet");
-      expect(responseFromGetToJson.status).toBe("owned");
+      expect(responseFromGetToJson.status).toBe("available");
     });
 
     await test.step("Update pet status to sold", async () => {
-      const updatedPet = { ...pet, status: "sold" };
+      const updatedPet: Pet = { ...pet, status: "sold" };
       const putResponse = await petService.updatePet(updatedPet);
       expect(putResponse.status()).toBe(200);
       const responseFromPutToJson = await putResponse.json();
@@ -84,7 +85,7 @@ test.describe("Pet API - CRUD tests", () => {
     const pet = new PetBuilder()
       .withId(Date.now())
       .withName("LuigisPet")
-      .withStatus("PendingToBeDeleted")
+      .withStatus("pending")
       .build();
 
     let petIdFromPost: number;
@@ -95,7 +96,7 @@ test.describe("Pet API - CRUD tests", () => {
 
       const responseFromPostToJson = await postResponse.json();
       expect(responseFromPostToJson.name).toBe("LuigisPet");
-      expect(responseFromPostToJson.status).toBe("PendingToBeDeleted");
+      expect(responseFromPostToJson.status).toBe("pending");
 
       petIdFromPost = responseFromPostToJson.id;
     });
@@ -106,7 +107,7 @@ test.describe("Pet API - CRUD tests", () => {
       const getResponseFromJson = await getResponse.json();
 
       expect(getResponseFromJson.name).toBe("LuigisPet");
-      expect(getResponseFromJson.status).toBe("PendingToBeDeleted");
+      expect(getResponseFromJson.status).toBe("pending");
     });
 
     await test.step("Delete pet by ID", async () => {

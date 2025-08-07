@@ -8,9 +8,11 @@ import { CheckoutComplete } from "../pages/CheckoutComplete";
 import { MenuPage } from "../pages/MenuPage";
 import { AboutPage } from "../pages/AboutPage";
 import { PetService } from "../../src/services/PetService";
+import { UserService } from "../../src/services/UserService";
 
 type ApiFixtures = {
   petService: PetService;
+  userService: UserService;
 };
 
 type PageFixtures = {
@@ -29,6 +31,11 @@ petService: async ({ request }, use) => {
   const service = new PetService(request, true);
   await use(service);
 },
+  userService: async ({ request }, use) => {
+    const service = new UserService(request);
+    await use(service);
+  },
+  
   loginPage: async ({ page }, use) => {
     const loginPage = new LoginPage(page);
     await use(loginPage);

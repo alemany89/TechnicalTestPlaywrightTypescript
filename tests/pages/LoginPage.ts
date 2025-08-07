@@ -1,11 +1,7 @@
 import { expect, Page } from "@playwright/test";
 import { CommonPage } from "./CommonPage.js";
 
-
-
 export class LoginPage extends CommonPage {
-
-
   constructor(page: Page) {
     super(page);
   }
@@ -13,7 +9,7 @@ export class LoginPage extends CommonPage {
   async login(username: string, password: string) {
     const usernameInput = this.page.locator("#user-name");
     const passwordInput = this.page.locator("#password");
-    const loginButton = this.page.locator('#login-button');
+    const loginButton = this.page.locator("#login-button");
 
     await usernameInput.fill(username);
     await passwordInput.fill(password);
@@ -21,7 +17,9 @@ export class LoginPage extends CommonPage {
   }
 
   async navigate() {
-    await this.page.goto("https://www.saucedemo.com/");
+    await this.page.goto("https://www.saucedemo.com/", {
+      waitUntil: "networkidle",
+    });
   }
 
   async getErrorMessage() {
@@ -29,9 +27,8 @@ export class LoginPage extends CommonPage {
     return await this.getText(errorMessage);
   }
 
-    async isLoaded() {
-          const loginButton = this.page.locator('#login-button');
-          return await loginButton.isVisible();
+  async isLoaded() {
+    const loginButton = this.page.locator("#login-button");
+    return await loginButton.isVisible();
   }
-
 }

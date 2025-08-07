@@ -1,4 +1,5 @@
 import { APIRequestContext } from "@playwright/test";
+import { Pet } from "../models/Pet";
 
 export class PetService {
   private baseURL: string;
@@ -7,7 +8,7 @@ export class PetService {
     this.baseURL = "https://petstore.swagger.io/v2";
   }
 
-  async createPet(pet: any) {
+  async createPet(pet: Pet) {
     this.log &&
       console.log(
         `➡️ [POST] ${this.baseURL}/pet\n`,
@@ -45,7 +46,7 @@ export class PetService {
     return response;
   }
 
-  async updatePet(updatedPet: any) {
+  async updatePet(updatedPet: Pet) {
     this.log &&
       console.log(
         `➡️ [PUT] ${this.baseURL}/pet\n`,
@@ -60,9 +61,11 @@ export class PetService {
       },
     });
 
-    this.log && console.log(`⬅️ [${response.status()}] PUT /pet`);
-    const responseBody = await response.json();
-    console.log("Response JSON:", JSON.stringify(responseBody, null, 2));
+    if (this.log) {
+      console.log(`⬅️ [${response.status()}] PUT /pet`);
+      const responseBody = await response.json();
+      console.log("Response JSON:", JSON.stringify(responseBody, null, 2));
+    }
 
     return response;
   }
@@ -79,10 +82,12 @@ export class PetService {
         },
       }
     );
-    this.log &&
+
+    if (this.log) {
       console.log(`⬅️ [${response.status()}] DELETE /pet/${petIdFromPost}`);
-    const responseBody = await response.json();
-    console.log("Response JSON:", JSON.stringify(responseBody, null, 2));
+      const responseBody = await response.json();
+      console.log("Response JSON:", JSON.stringify(responseBody, null, 2));
+    }
 
     return response;
   }

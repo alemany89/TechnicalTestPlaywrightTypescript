@@ -40,6 +40,16 @@ export const pollUntilOk = async (
   throw new Error(`Failed after ${maxRetries} retries.`);
 };
 
+/**
+ * Retries an HTTP request function until it returns a specific status or the max retry limit is reached.
+ *
+ * @param requestFn - A function that returns a Promise with an API response (e.g., GET request).
+ * @param expectedStatus - The expected status to match.
+ * @param maxRetries - Maximum number of retry attempts. Default is 5.
+ * @param delayMs - Delay in milliseconds between retries. Default is 1000ms.
+ * @returns The APIResponse with the expected status.
+ * @throws Error if the response never matches the expected status within the retry limit.
+ */
 export const pollUntilStatus = async (
   requestFn: () => Promise<APIResponse>,
   expectedStatus: string,
