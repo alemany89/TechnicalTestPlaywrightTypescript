@@ -1,5 +1,5 @@
 import { APIRequestContext } from "@playwright/test";
-import { Pet } from "../models/Pet";
+import { PetDTORequest } from "../dto/pet/PetDTORequest";
 
 export class PetService {
   private baseURL: string;
@@ -8,7 +8,7 @@ export class PetService {
     this.baseURL = "https://petstore.swagger.io/v2";
   }
 
-  async createPet(pet: Pet) {
+  async createPet(pet: PetDTORequest) {
     this.log &&
       console.log(
         `➡️ [POST] ${this.baseURL}/pet\n`,
@@ -24,7 +24,7 @@ export class PetService {
     });
 
     if (this.log) {
-      console.log(`⬅️ [${response.status()}] POST /pet`);
+      console.log(`⬅️ [${response.status()}] POST ${this.baseURL}/pet`);
       const responseBody = await response.json();
       console.log("Response JSON:", JSON.stringify(responseBody, null, 2));
     }
@@ -38,7 +38,7 @@ export class PetService {
     const response = await this.request.get(`${this.baseURL}/pet/${id}`);
 
     if (this.log) {
-      console.log(`⬅️ [${response.status()}] GET /pet/${id}`);
+      console.log(`⬅️ [${response.status()}] GET ${this.baseURL}/pet/${id}`);
       const responseBody = await response.json();
       console.log("Response JSON:", JSON.stringify(responseBody, null, 2));
     }
@@ -46,7 +46,7 @@ export class PetService {
     return response;
   }
 
-  async updatePet(updatedPet: Pet) {
+  async updatePet(updatedPet: PetDTORequest) {
     this.log &&
       console.log(
         `➡️ [PUT] ${this.baseURL}/pet\n`,
@@ -62,7 +62,7 @@ export class PetService {
     });
 
     if (this.log) {
-      console.log(`⬅️ [${response.status()}] PUT /pet`);
+      console.log(`⬅️ [${response.status()}] PUT ${this.baseURL}/pet`);
       const responseBody = await response.json();
       console.log("Response JSON:", JSON.stringify(responseBody, null, 2));
     }
@@ -84,7 +84,9 @@ export class PetService {
     );
 
     if (this.log) {
-      console.log(`⬅️ [${response.status()}] DELETE /pet/${petIdFromPost}`);
+      console.log(
+        `⬅️ [${response.status()}] DELETE ${this.baseURL}/pet/${petIdFromPost}`
+      );
       const responseBody = await response.json();
       console.log("Response JSON:", JSON.stringify(responseBody, null, 2));
     }

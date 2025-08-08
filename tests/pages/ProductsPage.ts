@@ -2,59 +2,70 @@ import { expect, Page } from "@playwright/test";
 import { CommonPage } from "./CommonPage";
 
 export class ProductsPage extends CommonPage {
-
+  private static readonly INVENTORY_LIST_SELECTOR = "[data-test='inventory-list']";
+  private static readonly CART_ICON_SELECTOR = "[data-test='shopping-cart-link']";
+  private static readonly SORT_DROPDOWN_SELECTOR = "[data-test='product-sort-container']";
+  private static readonly PRODUCT_NAME_SELECTOR = "[data-test='inventory-item-name']";
+  private static readonly PRODUCT_PRICE_SELECTOR = "[data-test='inventory-item-price']";
+  private static readonly TITLE_SELECTOR = "[data-test='title']";
 
   constructor(page: Page) {
     super(page);
   }
 
-  async isLoaded()  {
-    const titleProductsPage = this.page.locator("[data-test='title']");
-    return await titleProductsPage.isVisible();
-  }
-
   async waitForProductsToLoad() {
-    await this.page.waitForSelector("[data-test='inventory-list']", { state: "attached" });
+    await this.page.waitForSelector(ProductsPage.INVENTORY_LIST_SELECTOR, {
+      state: "attached",
+    });
   }
 
-    addProductToCart(productName: string) {
-      const productNameToSelectorFormat = productName.replace(/\s+/g, '-').toLowerCase();
-      const productLocator = this.page.locator(`button[data-test='add-to-cart-${productNameToSelectorFormat}']`);
-
-      return productLocator.click();
+  addProductToCart(productName: string) {
+    const formattedName = productName.replace(/\s+/g, "-").toLowerCase();
+    const productLocator = this.page.locator(
+      `button[data-test='add-to-cart-${formattedName}']`
+    );
+    return productLocator.click();
   }
 
-  	clickToCartIcon() {
-		const cartIcon = this.page.locator("[data-test='shopping-cart-link']");
-		return cartIcon.click();
-	}
+  clickToCartIcon() {
+    return this.page.locator(ProductsPage.CART_ICON_SELECTOR).click();
+  }
 
-  	sortProductsAlphabetically() {
-		const sortButton = this.page.locator("[data-test='product-sort-container']");
-		return sortButton.selectOption({ label: "Name (A to Z)" });
-	}
+  sortProductsAlphabetically() {
+    return this.page
+      .locator(ProductsPage.SORT_DROPDOWN_SELECTOR)
+      .selectOption({ label: "Name (A to Z)" });
+  }
 
   async sortProductsByPriceInDescendingOrder() {
-		const sortButton = this.page.locator("[data-test='product-sort-container']");
-		return sortButton.selectOption({ label: "Price (high to low)" });
-	}
+    return this.page
+      .locator(ProductsPage.SORT_DROPDOWN_SELECTOR)
+      .selectOption({ label: "Price (high to low)" });
+  }
 
   async sortProductsByPriceInAscendingOrder() {
-		const sortButton = this.page.locator("[data-test='product-sort-container']");
-		return sortButton.selectOption({ label: "Price (low to high)" });
-	}
+    return this.page
+      .locator(ProductsPage.SORT_DROPDOWN_SELECTOR)
+      .selectOption({ label: "Price (low to high)" });
+  }
 
   async sortProductsReverseAlphabetically() {
-    const sortButton = this.page.locator("[data-test='product-sort-container']");
-    return sortButton.selectOption({ label: "Name (Z to A)" });
+    return this.page
+      .locator(ProductsPage.SORT_DROPDOWN_SELECTOR)
+      .selectOption({ label: "Name (Z to A)" });
   }
 
   getProductsNames() {
-		return this.page.locator("[data-test='inventory-item-name']").allTextContents();
-	}
-
-  getProductPrices() {
-    return this.page.locator("[data-test='inventory-item-price']").allTextContents();
+    return this.page.locator(ProductsPage.PRODUCT_NAME_SELECTOR).allTextContents();
   }
 
+  getProductPrices() {
+    return this.page.locator(ProductsPage.PRODUCT_PRICE_SELECTOR).allTextContents();
+  }
+
+  async isLoaded() {
+    expect(
+      await this.page.locator(ProductsPage.TITLE_SELECTOR).isVisible()
+    ).toBeTruthy();
+  }
 }

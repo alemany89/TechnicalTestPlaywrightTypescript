@@ -2,20 +2,22 @@ import { expect, test } from "./support/fixtures";
 
 test.describe("Products Feature", () => {
   test.beforeEach(async ({ loginPage, productsPage }) => {
-    await test.step("Given I am on the products page", async () => {
-      await loginPage.navigate();
-      await loginPage.login("standard_user", "secret_sauce");
-      await productsPage.waitForProductsToLoad();
-    });
+    await loginPage.navigate();
+    await loginPage.login("standard_user", "secret_sauce");
+    await productsPage.waitForProductsToLoad();
   });
 
   test("Buying a product successfully", async ({
     productsPage,
     yourCartPage,
     checkoutYourInformationPage,
-    checkoutOverview,
-    checkoutComplete,
+    checkoutOverviewPage,
+    checkoutCompletePage,
   }) => {
+    await test.step("Given I am on the products page", async () => {
+      expect(await productsPage.isLoaded());
+    });
+
     await test.step("When I add a product to the cart", async () => {
       await productsPage.addProductToCart("Sauce Labs Backpack");
     });
@@ -41,17 +43,21 @@ test.describe("Products Feature", () => {
     });
 
     await test.step("And I click on the finish button", async () => {
-      await checkoutOverview.clickFinishButton();
+      await checkoutOverviewPage.clickFinishButton();
     });
 
     await test.step("Then I should see the checkout completion message", async () => {
-      const message = await checkoutComplete.getCompletionMessage();
+      const message = await checkoutCompletePage.getCompletionMessage();
       expect(message).toContain("Thank you for your order!");
     });
   });
 
   test("Sorting products from Z to A", async ({ productsPage }) => {
     let expectedProductsAfterSorting: string[];
+
+    await test.step("Given I am on the products page", async () => {
+      expect(await productsPage.isLoaded());
+    });
 
     await test.step("When I get the current list of products names before sorting", async () => {
       const productsBeforeSorting = await productsPage.getProductsNames();
@@ -73,6 +79,10 @@ test.describe("Products Feature", () => {
   }) => {
     let expectedPricesAfterSorting: string[];
 
+    await test.step("Given I am on the products page", async () => {
+      expect(await productsPage.isLoaded());
+    });
+
     await test.step("When I get the current list of products prices before sorting", async () => {
       await productsPage.sortProductsByPriceInAscendingOrder();
       const pricesBeforeSorting = await productsPage.getProductPrices();
@@ -91,15 +101,25 @@ test.describe("Products Feature", () => {
     });
   });
 
-  test("From product page i can access to about page", async ({ menuPage, aboutPage }) => {
-	await test.step("When I click on the about link", async () => {
-		await menuPage.clickOnMenuButton();
-		await menuPage.clickOnAboutLink();
-	});
-	await test.step("Then I should see the about page", async () => {
-		await aboutPage.waitForAboutPageToLoad();
-		const aboutText = await aboutPage.getAboutText();
-		expect(aboutText).toContain("Build apps users love with AI-driven insights");
-	});
+  test("From product page i can access to about page", async ({
+    productsPage,
+    menuPage,
+    aboutPage,
+  }) => {
+    await test.step("Given I am on the products page", async () => {
+      expect(await productsPage.isLoaded());
+    });
+
+    await test.step("When I click on the about link", async () => {
+      await menuPage.clickOnMenuButton();
+      await menuPage.clickOnAboutLink();
+    });
+    await test.step("Then I should see the about page", async () => {
+      await aboutPage.waitForAboutPageToLoad();
+      const aboutText = await aboutPage.getAboutText();
+      expect(aboutText).toContain(
+        "Build apps users love with AI-driven quality"
+      );
+    });
   });
 });

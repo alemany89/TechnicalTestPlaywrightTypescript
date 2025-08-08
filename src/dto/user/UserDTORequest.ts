@@ -1,4 +1,4 @@
-export interface User {
+export interface UserDTORequest {
   id?: number;
   username?: string;
   firstName?: string;

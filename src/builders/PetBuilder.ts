@@ -1,16 +1,11 @@
-import { Pet } from "../models/Pet";
-import { PetStatus } from "../models/PetStatus";
+import { PetDTORequest } from "../dto/pet/PetDTORequest";
+import { PetStatus } from "../dto/pet/PetStatus";
 
 export class PetBuilder {
-  private pet: Pet = {
-    category: { id: 1, name: "dogs" },
-    name: "Luigis",
+  private pet: PetDTORequest = {
+    id: Date.now(),
+    name: "Pet",
     photoUrls: ["https://example.com"],
-    tags: [
-      { id: 1, name: "cute" },
-      { id: 2, name: "luis possession" },
-    ],
-    status: "available",
   };
 
   withId(id: number): this {
@@ -23,11 +18,17 @@ export class PetBuilder {
     return this;
   }
 
+  withPhotoUrls(photoUrls: string[]): this {
+    this.pet.photoUrls = photoUrls;
+    return this;
+  }
+
   withStatus(status: PetStatus): this {
     this.pet.status = status;
     return this;
   }
-  build(): Pet {
+  build(): PetDTORequest {
     return { ...this.pet };
   }
+  
 }

@@ -2,18 +2,18 @@ import { Page } from "@playwright/test";
 import { CommonPage } from "./CommonPage";
 
 export class MenuPage extends CommonPage {
+  private static readonly MENU_BUTTON_SELECTOR = "#react-burger-menu-btn";
+  private static readonly ABOUT_LINK_SELECTOR = "[data-test='about-sidebar-link']";
+
   constructor(page: Page) {
-	super(page);
+    super(page);
   }
 
   async clickOnMenuButton() {
-	const menuButton = this.page.locator("#react-burger-menu-btn");
-	return menuButton.click();
+    await this.page.locator(MenuPage.MENU_BUTTON_SELECTOR).click();
   }
 
   async clickOnAboutLink() {
-	const aboutLink = this.page.locator("[data-test='about-sidebar-link']");
-	return aboutLink.click();
+    await this.page.locator(MenuPage.ABOUT_LINK_SELECTOR).click();
   }
-
 }

@@ -11,18 +11,18 @@ import { APIResponse } from "@playwright/test";
  */
 export const pollUntilOk = async (
   requestFn: () => Promise<APIResponse>,
-  maxRetries: number = 5,
+  maxRetries: number = 10,
   delayMs: number = 1000
 ): Promise<APIResponse> => {
-  let lastResponse: APIResponse | undefined;
+  let response: APIResponse | undefined;
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      lastResponse = await requestFn();
-      const status = lastResponse.status();
+      response = await requestFn();
+      const status = response.status();
 
       if (status === 200) {
-        return lastResponse;
+        return response;
       }
 
       console.warn(
@@ -34,7 +34,7 @@ export const pollUntilOk = async (
       );
     }
 
-    await new Promise((res) => setTimeout(res, delayMs));
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
   }
 
   throw new Error(`Failed after ${maxRetries} retries.`);
@@ -56,15 +56,15 @@ export const pollUntilStatus = async (
   maxRetries: number = 5,
   delayMs: number = 1000
 ): Promise<APIResponse> => {
-  let lastResponse: APIResponse | undefined;
+  let response: APIResponse | undefined;
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      lastResponse = await requestFn();
-      const { status } = await lastResponse.json();
+      response = await requestFn();
+      const { status } = await response.json();
 
       if (status === expectedStatus) {
-        return lastResponse;
+        return response;
       }
 
       console.warn(
@@ -76,10 +76,8 @@ export const pollUntilStatus = async (
       );
     }
 
-    await new Promise((res) => setTimeout(res, delayMs));
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
   }
 
-  throw new Error(
-    `Failed after ${maxRetries} retries.`
-  );
+  throw new Error(`Failed after ${maxRetries} retries.`);
 };
