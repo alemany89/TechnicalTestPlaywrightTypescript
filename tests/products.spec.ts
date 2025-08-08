@@ -85,11 +85,13 @@ test.describe("Products Feature", () => {
     });
 
     await test.step("When I get the current list of products prices before sorting", async () => {
-      await productsPage.sortProductsByPriceInAscendingOrder();
       const pricesBeforeSorting = await productsPage.getProductPrices();
       expectedPricesAfterSorting = pricesBeforeSorting
         .slice()
-        .sort((a, b) => parseFloat(a) - parseFloat(b));
+        .sort(
+          (a, b) =>
+            parseFloat(a.replace("$", "")) - parseFloat(b.replace("$", ""))
+        );
     });
 
     await test.step("And I sort the products by price in ascending order", async () => {
