@@ -60,6 +60,7 @@ test.describe("Products Feature", () => {
     });
 
     await test.step("When I get the current list of products names before sorting", async () => {
+      await productsPage.sortProductsAlphabetically();
       const productsBeforeSorting = await productsPage.getProductsNames();
       expectedProductsAfterSorting = [...productsBeforeSorting].reverse();
     });
