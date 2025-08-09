@@ -1,0 +1,46 @@
+name: Run tests and Publish Playwright report
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [run-tests]
+
+jobs:
+  test:
+    name: Run Playwright tests
+    runs-on: luisRunner
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript check
+        run: npx tsc --noEmit
+
+      - name: Run Playwright tests in parallel
+        run: npm test  -- --workers=12 --fully-parallel
+
+      - name: Upload HTML report artifact
+        if: always()
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: playwright-report
+
+  deploy:
+    name: Publish the report to GitHub Pages
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
