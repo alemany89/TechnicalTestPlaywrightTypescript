@@ -12,8 +12,11 @@ Contains `.spec.ts` files that define test cases for API endpoints, organized by
 **🔹 `support/`**
 Includes the `fixtures.ts` file where API services are injected into tests using Playwright's fixture system.
 
-**🔹 `services/`**
+**🔹 `builders/`**
 Implements the **Builder Pattern** to generate request payloads (e.g., `PetBuilder`) with default values or easyly being able to create a PetDtoRequest object with custom values.
+
+**🔹 `services/`**
+Implements the **Service Pattern**, act as a layer which interacts with the API from a given resource (pet, user, etc), its like a translator between the test and the API.
 
 **🔹 `dto/`**  
  Defines **Data Transfer Objects (DTOs)** using TypeScript interfaces that reflect the OpenAPI specification from [Swagger Petstore](https://petstore.swagger.io/).  
@@ -39,9 +42,9 @@ Instead of adopting a separate API testing framework, Playwright was used to uni
 **🔹 Retry Logic for Unstable GETs**
 The `poll.ts` is a utility class that was introduced to repeatedly call flaky GET endpoints (such as those from the Pet API) until a success response or max retries.
 
-## 🧪 Selected Services and Testing Strategies
+## 🧪 Selected APIs and Testing Strategies
 
-The framework focuses on covering two services provided by the Swagger Petstore API:
+The framework focuses on covering two APIs provided by the Swagger Petstore:
 
 ### ✅ `User` API scenarios – **Negative testing**
 
