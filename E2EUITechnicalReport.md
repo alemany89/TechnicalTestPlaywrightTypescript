@@ -1,6 +1,6 @@
 
 # E2E UI Technical report
-
+[⬅️ Back to readme](README.md)
 ## 📌 Project Structure
 
 The E2E framework that i've  designed is following  the **Page Object Model (POM)** pattern using  **Playwright** as testing framework. The UI project is organized into three main folders:
@@ -50,3 +50,6 @@ The framework focuses on covering two features provided by saucedemo website:
 ### ✅ `Product` feature scenarios
 
 - Focused on covering differents scenarios from the product page perpective (buying a product, filtering products by criteria and redirection to about page)
+
+---
+[⬅️ Back to readme](README.md)
