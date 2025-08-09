@@ -45,11 +45,18 @@ The framework focuses on covering two features provided by saucedemo website:
 
 ### ✅ `Login` feature scenarios 
 
-- Focused on validating the login flow with a few negative scenarios
+- Focused on validating the login flow:
+   - Login successfully
+   - Login failed due to incorrect username & password
+   - Loging failed due to trying to login with empty username
+   - Login failed for using a locked user credentials
 
 ### ✅ `Product` feature scenarios
 
-- Focused on covering differents scenarios from the product page perpective (buying a product, filtering products by criteria and redirection to about page)
+- Focused on covering differents scenarios from the product page perpective: 
+    - Checking the item counter in the cart matches with the producs selected
+    - Filtering products by criteria  
+    - Redirection to `about` page
 
 ---
 [⬅️ Back to readme](README.md)

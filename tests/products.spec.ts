@@ -7,13 +7,10 @@ test.describe("Products Feature", () => {
     await productsPage.waitForProductsToLoad();
   });
 
-  test("Buying a product successfully", async ({
-    productsPage,
-    yourCartPage,
-    checkoutYourInformationPage,
-    checkoutOverviewPage,
-    checkoutCompletePage,
+  test("Adding products to the basket increases the cart items counter", async ({
+    productsPage
   }) => {
+    const expectedNumberOfItemsInCart = 2;
     await test.step("Given I am on the products page", async () => {
       expect(await productsPage.isLoaded());
     });
@@ -22,35 +19,14 @@ test.describe("Products Feature", () => {
       await productsPage.addProductToCart("Sauce Labs Backpack");
     });
 
-    await test.step("And I click on the cart icon", async ({}) => {
-      await productsPage.clickToCartIcon();
+    await test.step("And I add a second product to the cart", async () => {
+      await productsPage.addProductToCart("Sauce Labs Bike Light");
     });
 
-    await test.step("And I proceed to checkout", async () => {
-      await yourCartPage.clickOnCheckoutButton();
+    await test.step(`Then the cart count should be ${expectedNumberOfItemsInCart}`, async () => {
+      expect(await productsPage.getCartItemsCount()).toBe(expectedNumberOfItemsInCart);
     });
-
-    await test.step("And I fill in the checkout information", async () => {
-      await checkoutYourInformationPage.fillCheckoutInformation(
-        "Luis",
-        "Joaquin",
-        "41008"
-      );
-    });
-
-    await test.step("And I click on the continue button", async () => {
-      await checkoutYourInformationPage.clickContinueButton();
-    });
-
-    await test.step("And I click on the finish button", async () => {
-      await checkoutOverviewPage.clickFinishButton();
-    });
-
-    await test.step("Then I should see the checkout completion message", async () => {
-      const message = await checkoutCompletePage.getCompletionMessage();
-      expect(message).toContain("Thank you for your order!");
-    });
-  });
+  }); 
 
   test("Sorting products from Z to A", async ({ productsPage }) => {
     let expectedProductsAfterSorting: string[];

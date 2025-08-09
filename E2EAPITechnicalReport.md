@@ -48,7 +48,7 @@ The framework focuses on covering two APIs provided by the Swagger Petstore:
 
 ### ✅ `User` API scenarios – **Negative testing**
 
-- Focused on validating error handling and edge cases.
+- Focused on validating edge cases.
 - Examples include attempting to get or create users with missing or invalid data.
 - Ensures the API responds correctly to bad input.
 

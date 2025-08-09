@@ -2,11 +2,19 @@ import { expect, Page } from "@playwright/test";
 import { CommonPage } from "./CommonPage";
 
 export class ProductsPage extends CommonPage {
-  private static readonly INVENTORY_LIST_SELECTOR = "[data-test='inventory-list']";
-  private static readonly CART_ICON_SELECTOR = "[data-test='shopping-cart-link']";
-  private static readonly SORT_DROPDOWN_SELECTOR = "[data-test='product-sort-container']";
-  private static readonly PRODUCT_NAME_SELECTOR = "[data-test='inventory-item-name']";
-  private static readonly PRODUCT_PRICE_SELECTOR = "[data-test='inventory-item-price']";
+  private static readonly INVENTORY_LIST_SELECTOR =
+    "[data-test='inventory-list']";
+  private static readonly CART_ICON_SELECTOR =
+    "[data-test='shopping-cart-link']";
+  private static readonly SORT_DROPDOWN_SELECTOR =
+    "[data-test='product-sort-container']";
+  private static readonly PRODUCT_NAME_SELECTOR =
+    "[data-test='inventory-item-name']";
+  private static readonly PRODUCT_PRICE_SELECTOR =
+    "[data-test='inventory-item-price']";
+  private static readonly SHOPPING_CART_COUNTER_SELECTOR =
+    "[data-test='shopping-cart-badge']";
+
   private static readonly TITLE_SELECTOR = "[data-test='title']";
 
   constructor(page: Page) {
@@ -56,11 +64,22 @@ export class ProductsPage extends CommonPage {
   }
 
   getProductsNames() {
-    return this.page.locator(ProductsPage.PRODUCT_NAME_SELECTOR).allTextContents();
+    return this.page
+      .locator(ProductsPage.PRODUCT_NAME_SELECTOR)
+      .allTextContents();
   }
 
   getProductPrices() {
-    return this.page.locator(ProductsPage.PRODUCT_PRICE_SELECTOR).allTextContents();
+    return this.page
+      .locator(ProductsPage.PRODUCT_PRICE_SELECTOR)
+      .allTextContents();
+  }
+
+  async getCartItemsCount(): Promise<number> {
+    const cartItems = this.page.locator(
+      ProductsPage.SHOPPING_CART_COUNTER_SELECTOR
+    );
+    return parseInt(await this.getText(cartItems));
   }
 
   async isLoaded() {
