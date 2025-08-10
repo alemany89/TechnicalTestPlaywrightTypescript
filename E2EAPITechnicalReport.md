@@ -58,11 +58,15 @@ The framework focuses on covering two APIs provided by the Swagger Petstore:
 - Covers create, read (by ID), update, and delete operations.
 - Includes polling logic to handle eventual consistency in the API (e.g., `GET /pet/{id}` after a `POST`).
 
-**Notes**: During the analysis of how to cover the CRUD suite i found 2 issues that the test are fixing by themselves in order to accomplish the CRUD suite:
+## Assumptions & Known Issues (Petstore)
 
-1. The GET /pet or /DELETE endpoints are flakky(for the Pet API at least) and you need to call it multiple times in order to find/delete the pet that you previously added (thats why i implemented the pollin.ts class)
+1. During the analysis of how to cover the CRUD suite i found 2 issues that the test are fixing by themselves in order to accomplish the CRUD suite(my goal during the technical task is to show the flow, in a daily work bases these points shouldnt be handled by the test responsability, and these test **should fail** ):
 
-2. Even if the Pet model documentation at the swagger has the field **id** as optional, it not working as expected because the id autoincrement stay static and so when processing multiple post requests, the id is always the same number which bring wrong expected values, What the tests are doing under the hood trough the PetBuilder is to apply an id with Date.now() method and having an isolated value making the expected results reliable.
+	- The GET /pet or /DELETE endpoints are flakky(for the Pet API at least) and you need to call it multiple times in order to find/delete the pet that you previously added (thats why i implemented the pollin.ts class)
+
+	- Even if the Pet model documentation at the swagger has the field **id** as optional, it not working as expected because the id autoincrement stay static when processing multiple post requests, the id is always the same number which bring wrong expected values, What the tests are doing under the hood trough the PetBuilder is to apply an id with Date.now() method and having an isolated value making the expected results reliable.
+
+2. During the analysis of how to cover the Negative scenarios i found that in swagger there are no documentation regarding what are the bodies to be expected at the response level for negative scenarios, so my approach was to expect the same type of object that the actual api is using as response, which from my point of view should be documented or rised to clarify.
 
 ---
 
