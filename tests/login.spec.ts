@@ -106,6 +106,7 @@ test.describe("Login Feature", () => {
 
     await test.step("And I should still be on the login page", async () => {
       expect(await loginPage.isLoaded());
+      expect(false).toBe(true);
     });
   });
 });
