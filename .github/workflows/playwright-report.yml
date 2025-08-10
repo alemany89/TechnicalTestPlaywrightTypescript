@@ -21,6 +21,8 @@ jobs:
         run: npx tsc --noEmit
 
       - name: Run Playwright tests in parallel
+        id: testStep
+        continue-on-error: true
         run: npm test  -- --workers=12 --fully-parallel
 
       - name: Upload HTML report artifact
@@ -29,7 +31,12 @@ jobs:
         with:
           path: playwright-report
 
+      - name: Fail job if tests failed
+        if: ${{ steps.testStep.conclusion != 'success' }}
+        run: exit 1
+
   deploy:
+    if: always()
     name: Publish the report to GitHub Pages
     needs: test
     runs-on: ubuntu-latest
