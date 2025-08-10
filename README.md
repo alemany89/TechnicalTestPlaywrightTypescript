@@ -28,7 +28,10 @@ This workflow is configured to be launched by clicking the following button:
 
 [![Run Tests](https://img.shields.io/badge/RUN%20TESTS-▶-blue?style=for-the-badge&logo=githubactions&logoColor=white)](https://gh-dispatch-api.onrender.com/webhook/089c101bf6d16f86b687bb71d1bcde82364110486ef4f060a1548ceaeef0ba83)
 
-Once clicked you will be redirected to the `actions` section, and if you dont see the run starting, just refresh the page. Once finished the report will be published on git pages(link also attached to the repository's description):
+> **Note:** If you don’t have Write permissions on the repo, pipeline status won’t update live for you. If you don’t see changes after a few seconds, just refresh the page manually.
+
+
+Once finished the report will be published on git pages(link also attached to the repository's description):
 
 🔗 [View Playwright Report of the latest run](https://alemany89.github.io/TechnicalTestPlaywrightTypescript/)
 
