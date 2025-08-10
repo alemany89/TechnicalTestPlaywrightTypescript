@@ -60,7 +60,7 @@ The framework focuses on covering two APIs provided by the Swagger Petstore:
 
 **Notes**: During the analysis of how to cover the CRUD suite i found 2 issues that the test are fixing by themselves in order to accomplish the CRUD suite:
 
-1. The GET /pet endpoint is flakky and you need to call it multiple times in order to find the pet that you previously added (thats why i implemented the pollin.ts class)
+1. The GET /pet or /DELETE endpoints are flakky(for the Pet API at least) and you need to call it multiple times in order to find/delete the pet that you previously added (thats why i implemented the pollin.ts class)
 
 2. Even if the Pet model documentation at the swagger has the field **id** as optional, it not working as expected because the id autoincrement stay static and so when processing multiple post requests, the id is always the same number which bring wrong expected values, What the tests are doing under the hood trough the PetBuilder is to apply an id with Date.now() method and having an isolated value making the expected results reliable.
 

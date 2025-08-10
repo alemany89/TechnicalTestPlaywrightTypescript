@@ -8,7 +8,7 @@ test.describe("Products Feature", () => {
   });
 
   test("Adding products to the basket increases the cart items counter", async ({
-    productsPage
+    productsPage,
   }) => {
     const expectedNumberOfItemsInCart = 2;
     await test.step("Given I am on the products page", async () => {
@@ -24,9 +24,11 @@ test.describe("Products Feature", () => {
     });
 
     await test.step(`Then the cart count should be ${expectedNumberOfItemsInCart}`, async () => {
-      expect(await productsPage.getCartItemsCount()).toBe(expectedNumberOfItemsInCart);
+      expect(await productsPage.getCartItemsCount()).toBe(
+        expectedNumberOfItemsInCart
+      );
     });
-  }); 
+  });
 
   test("Sorting products from Z to A", async ({ productsPage }) => {
     let expectedProductsAfterSorting: string[];
@@ -85,6 +87,7 @@ test.describe("Products Feature", () => {
     menuPage,
     aboutPage,
   }) => {
+    const expectedAboutTitle = "Build apps users love with AI-driven quality";
     await test.step("Given I am on the products page", async () => {
       expect(await productsPage.isLoaded());
     });
@@ -96,9 +99,7 @@ test.describe("Products Feature", () => {
     await test.step("Then I should see the about page", async () => {
       await aboutPage.waitForAboutPageToLoad();
       const aboutText = await aboutPage.getAboutText();
-      expect(aboutText).toContain(
-        "Build apps users love with AI-driven quality"
-      );
+      expect(aboutText).toContain(expectedAboutTitle);
     });
   });
 });
