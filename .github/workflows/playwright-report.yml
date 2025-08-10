@@ -32,7 +32,7 @@ jobs:
           path: playwright-report
 
       - name: Fail job if tests failed
-        if: ${{ steps.testStep.conclusion != 'success' }}
+        if: ${{ steps.testStep.outcome != 'success' }}
         run: exit 1
 
   deploy:
