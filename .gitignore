@@ -1,15 +1,6 @@
-# Dependencias
+# Dependencies
 node_modules/
 
-# Reportes de Playwright
+# Playwright reports
 playwright-report/
 test-results/
-
-
-# Archivos temporales / logs comunes
-*.log
-*.tsbuildinfo
-
-# Directorios de salida
-dist/
-out/
