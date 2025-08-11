@@ -73,8 +73,6 @@ the workflow is located at:
 git clone https://github.com/alemany89/TechnicalTestPlaywrightTypescript.git
 
 cd TechnicalTestPlaywrightTypescript
-
-npm ci
 ```
 
 ### 2. Download dependencies
