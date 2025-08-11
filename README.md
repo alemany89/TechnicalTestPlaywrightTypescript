@@ -1,4 +1,4 @@
-# 🧪 E2E & API Testing Framework -> Playwright & TypeScript
+# 🧪 UI & API Testing Framework -> Playwright & TypeScript
 
 [![E2E Tests status](https://img.shields.io/github/actions/workflow/status/alemany89/TechnicalTestPlaywrightTypescript/playwright-report.yml?branch=main&label=E2E%20Tests%20status)](https://github.com/alemany89/TechnicalTestPlaywrightTypescript/actions/workflows/playwright-report.yml)
 
